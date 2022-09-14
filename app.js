@@ -272,15 +272,22 @@ let getitemscontainer = document.querySelector(".items-container");
 let getempty = document.querySelector(".empty");
 let getnothing = document.querySelector(".nothing");
 
+let productfiltered = [];
+
 getinput.addEventListener("keyup", (e) => {
+  if (e.key === "ArrowUp" || e.key === "ArrowDown" || e.key === "Enter") {
+    navigateAndSelect(e.key);
+
+    return;
+  }
+
   const searchtest = e.target.value.toLowerCase();
   //   console.log("value", searchtest);
   getitemscontainer.innerHTML = "";
-
   if (searchtest.length === 0) {
     return;
   }
-  const productfiltered = products.filter((product) => {
+  productfiltered = products.filter((product) => {
     return product.title.toLowerCase().includes(searchtest);
   });
 
@@ -309,3 +316,68 @@ getinput.addEventListener("keyup", (e) => {
     getempty.textContent = `Result you looking for  ${searchtest} have not here!`;
   }
 });
+
+// ------------------------Keychange function end here-------------------------
+
+// ------------------------Arrow Keys Funcion start here-----------------------
+
+let indexToSelect = -1;
+
+const navigateAndSelect = (key) => {
+  if (key === "ArrowDown") {
+    if (indexToSelect === productfiltered.length - 1) {
+      indexToSelect = -1;
+      deselectfun();
+      return;
+    }
+
+    indexToSelect += 1;
+    const productidselectcontainer = selectproduct(indexToSelect);
+
+    if (indexToSelect > 0) {
+      deselectfun();
+    }
+
+    productidselectcontainer.classList.add("selected");
+
+    // console.log(productidselectcontainer);
+  } else if (key === "ArrowUp") {
+    if (indexToSelect === -1) {
+      return;
+    }
+
+    if (indexToSelect === 0) {
+      deselectfun();
+      indexToSelect = -1;
+      return;
+    }
+
+    indexToSelect -= 1;
+    deselectfun();
+    selectproduct(indexToSelect);
+
+    const productidselectcontainer = selectproduct(indexToSelect);
+    productidselectcontainer.classList.add("selected");
+  } else {
+    const enterProduct = selectproduct(indexToSelect);
+  }
+};
+
+// -------------------------------global scope (for duplicate problem)---------------------
+
+const deselectfun = () => {
+  const productToDeselect = document.getElementsByClassName("selected")[0];
+  productToDeselect.style.backgroundColor = "#7367f0";
+  productToDeselect.firstChild.style.color = "#fff";
+  productToDeselect.style.fontFamily = "Roboto";
+  productToDeselect.classList.remove("selected");
+};
+
+const selectproduct = (index) => {
+  const productidtoselect = productfiltered[index].id.toString();
+  const productidselectcontainer = document.getElementById(productidtoselect);
+  productidselectcontainer.style.backgroundColor = "#665fa386";
+  productidselectcontainer.style.fontFamily = "Times New Roman";
+
+  return productidselectcontainer;
+};

@@ -1,7 +1,6 @@
 body {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
 
   /* background: linear-gradient(43deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%); */
 }
@@ -32,7 +31,7 @@ body {
 
 .items-container {
   background: linear-gradient(#7367f0, #7365f5);
-  border-radius: 20px;
+
   margin-top: 10px;
 }
 
@@ -65,11 +64,12 @@ body {
   --unknown: red;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 767px) {
   .container input {
     width: 400px;
+    padding: 20px;
   }
-  .productitemContainer {
-    width: 400px;
+  .items-container {
+    width: 430px;
   }
 }
